@@ -1,9 +1,6 @@
 # CaseStudy
 A schedueling system for a photographer's buisness
 
-# CaseStudy
-A schedueling system for a photographer's buisness
-
 The idea?
 Photographic website.
 
