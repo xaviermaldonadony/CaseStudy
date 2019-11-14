@@ -13,6 +13,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.*;
 import java.util.Set;
 @Entity
 @Table(name="user")
@@ -22,7 +23,7 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 //    @NotEmpty
-    private long id;
+    private int id;
 
 	@Column(name="first_name")
     @NotEmpty
@@ -32,6 +33,7 @@ public class User {
     @NotEmpty
     private String lastName;
 
+//	TO DO unique=true 
 	@Column(name="email")
     @NotEmpty
     private String email;
@@ -53,18 +55,34 @@ public class User {
     @Pattern(regexp = "\\d{10}") //regex expects 10 digits
     @NotEmpty
     private String phone;
-
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private Set<Authorities> authorities = new HashSet<>();
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="credential_id")
+	private Credential credential;
+	
+	// TO D0
+//	PaymentDetails paymentDetails;
+	
+//	If we delete an instructor we don't want to delete the invoice or vice versa.
+//	mapped by user in invoice
+//	bidirectional
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "user")
+	private Set<Invoice> invoices = new HashSet<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "user")
+	private Set<PaymentDetails> paymentDetails = new HashSet<>();
+	
+	
 	//    @CreditCardNumber
 //    @NotEmpty
 //    private String cc;
 
-    public long getId() {
+//	Getter and Setters
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -124,6 +142,42 @@ public class User {
         this.phone = phone;
     }
 
+    public void setCredntial(Credential credential) {
+    	this.credential = credential;
+    }
+    
+    public Credential getcredential() {
+    	return this.credential;
+    }
+
+    public Set<Invoice> getInvoices(){
+    	
+    	return invoices;
+    }
+    public void SetInvoices(Set<Invoice> invoices) {
+    	this.invoices = invoices;
+    }
+    
+    // add an invoice to a user and add the user to the invoice;
+    public void add(Invoice invoice) {
+    	
+    	if(invoices == null)
+    	{
+    		invoices = new HashSet<Invoice>();
+    	}
+    	invoices.add(invoice);
+    	invoice.setUser(this);
+    	
+    }
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", email=" + email + ", dateOfBirth=" + dateOfBirth
+				+ ", joinedSince=" + joinedSince + ", phone=" + phone
+				+ ", credential=" + credential + "]";
+	}
+    
+    
 //    public String getCc() {
 //        return cc;
 //    }

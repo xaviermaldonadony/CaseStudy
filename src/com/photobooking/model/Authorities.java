@@ -16,8 +16,8 @@ public class Authorities {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "username")
-	private Credential user;
+	@JoinColumn(name = "credential_id")
+	private Credential credential;
 
 	public String getAuthority() {
 		return authority;
@@ -27,12 +27,12 @@ public class Authorities {
 		this.authority = authority;
 	}
 
-	public Credential getUser() {
-		return user;
+	public Credential getCredential() {
+		return credential;
 	}
 
-	public void setUser(Credential user) {
-		this.user = user;
+	public void setCredential(Credential credential) {
+		this.credential = credential;
 	}
 	
 	

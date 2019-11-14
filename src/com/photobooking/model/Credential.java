@@ -12,6 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Credential {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	private  int id;
+	
 	@Column(name = "username", nullable = false)
 	private String username;
 	
@@ -23,7 +27,8 @@ public class Credential {
 	
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "credential")
 	private Set<Authorities> authorities = new HashSet<>();
 	
 	@JoinColumn(name = "user_id")
@@ -66,6 +71,13 @@ public class Credential {
 		this.authorities = authorities;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
+	}
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

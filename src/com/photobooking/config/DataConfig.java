@@ -22,7 +22,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.profile.repository")
+@EnableJpaRepositories("com.photobooking.repository")
 @PropertySource("classpath:data.properties") //there might be an error here
 public class DataConfig {
 
@@ -47,7 +47,7 @@ public class DataConfig {
         lcemfb.setJpaVendorAdapter(getJpaVendorAdapter());
         lcemfb.setDataSource(dataSource());
         lcemfb.setPersistenceUnitName("CaseStudyPersistenceUnit");
-        lcemfb.setPackagesToScan("com.profile");
+        lcemfb.setPackagesToScan("com.photobooking");
         lcemfb.setJpaProperties(hibernateProperties());
         return lcemfb;
     }
